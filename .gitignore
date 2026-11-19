@@ -1,0 +1,15 @@
+# Java build output
+*.class
+out/
+build/
+target/
+
+# NetBeans local settings
+nbproject/private/
+nbactions-local.xml
+
+# Local application data and environment
+/data/
+.env
+.env.*
+!.env.example
