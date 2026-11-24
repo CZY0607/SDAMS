@@ -40,12 +40,12 @@ public class ManagerTests {
         }
     }
 
-    private static boolean throwsApp(Runnable r, String messagePart) {
+    private static boolean throwsExpected(Class<? extends RuntimeException> type, Runnable r, String messagePart) {
         try {
             r.run();
             return false;
-        } catch (AppException e) {
-            return e.getMessage().contains(messagePart);
+        } catch (RuntimeException e) {
+            return type.isInstance(e) && e.getMessage().contains(messagePart);
         }
     }
 
@@ -78,16 +78,16 @@ public class ManagerTests {
 
         System.out.println("User and Manager");
         check("Manager reports role MANAGER", new Manager("M9", "Ann Lee", "0123456789", "secret1").getRole().equals("MANAGER"));
-        check("short name rejected", throwsApp(() -> new Manager("M9", "A", "0123456789", "secret1"), "Name"));
-        check("bad contact rejected", throwsApp(() -> new Manager("M9", "Ann Lee", "abc", "secret1"), "Contact"));
-        check("short password rejected", throwsApp(() -> new Manager("M9", "Ann Lee", "0123456789", "123"), "Password"));
-        check("bad ID rejected", throwsApp(() -> new Manager("a b", "Ann Lee", "0123456789", "secret1"), "User ID"));
+        check("short name rejected", throwsExpected(IllegalArgumentException.class, () -> new Manager("M9", "A", "0123456789", "secret1"), "Name"));
+        check("bad contact rejected", throwsExpected(IllegalArgumentException.class, () -> new Manager("M9", "Ann Lee", "abc", "secret1"), "Contact"));
+        check("short password rejected", throwsExpected(IllegalArgumentException.class, () -> new Manager("M9", "Ann Lee", "0123456789", "123"), "Password"));
+        check("bad ID rejected", throwsExpected(IllegalArgumentException.class, () -> new Manager("a b", "Ann Lee", "0123456789", "secret1"), "User ID"));
 
         System.out.println("AuthenticationService");
         UserService us = new UserService();
         AuthenticationService auth = new AuthenticationService(us);
-        check("wrong password refused", throwsApp(() -> auth.login("M001", "wrong"), "Incorrect"));
-        check("unknown ID gives the same message", throwsApp(() -> auth.login("NOPE", "x"), "Incorrect"));
+        check("wrong password refused", throwsExpected(IllegalArgumentException.class, () -> auth.login("M001", "wrong"), "Incorrect"));
+        check("unknown ID gives the same message", throwsExpected(IllegalArgumentException.class, () -> auth.login("NOPE", "x"), "Incorrect"));
         User m = auth.login("m001", "manager123");
         check("ID is case-insensitive and currentUser is set", auth.getCurrentUser() == m);
         check("Manager may open REVENUE_REPORT", auth.hasAccess(m, "REVENUE_REPORT"));
@@ -98,30 +98,30 @@ public class ManagerTests {
         for (int i = 0; i < 5; i++) {
             try {
                 lock.login("AD001", "bad");
-            } catch (AppException ignored) {
+            } catch (IllegalArgumentException ignored) {
                 // expected
             }
         }
-        check("5 failed attempts lock the account", throwsApp(() -> lock.login("AD001", "admin123"), "Too many"));
+        check("5 failed attempts lock the account", throwsExpected(IllegalStateException.class, () -> lock.login("AD001", "admin123"), "Too many"));
 
         System.out.println("UserService (administrators)");
         String newId = us.generateUserID(Roles.ADMINISTRATOR);
         check("next administrator ID is AD002", newId.equals("AD002"));
         us.addUser(new Administrator(newId, "Daniel Wong", "014-5556677", "secret12"));
         check("duplicate ID rejected (even in another case)",
-                throwsApp(() -> us.addUser(new Administrator("ad002", "Dup Licate", "014-5556677", "secret12")), "already exists"));
+                throwsExpected(IllegalArgumentException.class, () -> us.addUser(new Administrator("ad002", "Dup Licate", "014-5556677", "secret12")), "already exists"));
         check("search finds by name", us.searchUser("wong").size() == 1);
         us.updateUser(new Administrator("AD002", "Daniel W. Wong", "014-5556677", "secret12"));
         check("update changes the name", us.getUserById("AD002").getName().equals("Daniel W. Wong"));
         us.deleteUser("AD002");
         check("delete removes the user", us.getUserById("AD002") == null);
-        check("deleting a missing user fails", throwsApp(() -> us.deleteUser("AD002"), "not found"));
+        check("deleting a missing user fails", throwsExpected(IllegalArgumentException.class, () -> us.deleteUser("AD002"), "not found"));
 
         System.out.println("Staff report");
         check("students are not staff", us.viewStaff("", "").size() == 3);
         check("role filter", us.viewStaff(Roles.ADMINISTRATOR, "").size() == 1);
         check("name filter (and a name containing |)", us.viewStaff("", "kumar").get(0).getID().equals("IN001"));
-        check("student is not a staff role", throwsApp(() -> us.viewStaff(Roles.STUDENT, ""), "not a staff role"));
+        check("student is not a staff role", throwsExpected(IllegalArgumentException.class, () -> us.viewStaff(Roles.STUDENT, ""), "not a staff role"));
         check("totals by role", us.countByRole(us.viewStaff("", "")).get(Roles.INSTRUCTOR) == 1);
         check("text report has the total", us.generateStaffReport("", "").contains("Total staff: 3"));
 
@@ -135,7 +135,7 @@ public class ManagerTests {
         check("March registrations = 2, cancelled = 1",
                 crs.getMonthlyRegistrations(2026)[2] == 2 && crs.getMonthlyCancelled(2026)[2] == 1);
         check("text report", ps.generateRevenueReport(3, 2026).contains("Total revenue: 70.30"));
-        check("bad month rejected", throwsApp(() -> ps.generateRevenueReport(13, 2026), "Month"));
+        check("bad month rejected", throwsExpected(IllegalArgumentException.class, () -> ps.generateRevenueReport(13, 2026), "Month"));
 
         if (GraphicsEnvironment.isHeadless()) {
             System.out.println("(no screen available: window tests skipped)");

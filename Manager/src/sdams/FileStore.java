@@ -27,7 +27,7 @@ public class FileStore {
                 Files.write(file, new byte[0]);
             }
         } catch (IOException e) {
-            throw new AppException("Cannot prepare data file " + file + ": " + e.getMessage());
+            throw new IllegalStateException("Cannot prepare data file " + file + ": " + e.getMessage(), e);
         }
     }
 
@@ -66,7 +66,7 @@ public class FileStore {
             }
             return rows;
         } catch (IOException e) {
-            throw new AppException("Cannot read " + file + ": " + e.getMessage());
+            throw new IllegalStateException("Cannot read " + file + ": " + e.getMessage(), e);
         }
     }
 
@@ -87,7 +87,7 @@ public class FileStore {
             Files.write(tmp, lines, StandardCharsets.UTF_8);
             Files.move(tmp, file, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new AppException("Cannot save " + file + ": " + e.getMessage());
+            throw new IllegalStateException("Cannot save " + file + ": " + e.getMessage(), e);
         }
     }
 }

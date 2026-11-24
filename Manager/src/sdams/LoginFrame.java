@@ -96,7 +96,7 @@ public class LoginFrame extends JFrame {
             User user = authService.login(userIdField.getText(), new String(passwordField.getPassword()));
             passwordField.setText("");
             app.openFrameFor(this, user);
-        } catch (AppException ex) {
+        } catch (IllegalArgumentException | IllegalStateException ex) {
             errorLabel.setText(ex.getMessage());
             passwordField.setText("");
             passwordField.requestFocusInWindow();

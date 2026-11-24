@@ -36,13 +36,14 @@ public class AuthenticationService {
 
     /**
      * @return the signed-in user
-     * @throws AppException on a wrong ID or password, or after too many failed attempts
+     * @throws IllegalArgumentException on a wrong ID or password
+     * @throws IllegalStateException during a temporary lockout
      */
     public User login(String userID, String password) {
         String key = userID == null ? "" : userID.trim().toLowerCase(Locale.ROOT);
         Long until = lockedUntil.get(key);
         if (until != null && until > System.currentTimeMillis()) {
-            throw new AppException("Too many failed attempts. Wait a minute and try again.");
+            throw new IllegalStateException("Too many failed attempts. Wait a minute and try again.");
         }
 
         User user = userService.getUserById(userID);
@@ -54,7 +55,7 @@ public class AuthenticationService {
                 lockedUntil.put(key, System.currentTimeMillis() + LOCK_MILLIS);
                 count[0] = 0;
             }
-            throw new AppException("Incorrect user ID or password");
+            throw new IllegalArgumentException("Incorrect user ID or password");
         }
         failedAttempts.remove(key);
         lockedUntil.remove(key);

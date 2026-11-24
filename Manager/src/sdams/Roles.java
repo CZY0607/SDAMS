@@ -45,7 +45,7 @@ public final class Roles {
     public static String idPrefix(String role) {
         String prefix = ID_PREFIX.get(role);
         if (prefix == null) {
-            throw new AppException("Unknown role: " + role);
+            throw new IllegalArgumentException("Unknown role: " + role);
         }
         return prefix;
     }

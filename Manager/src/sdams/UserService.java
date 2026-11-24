@@ -95,7 +95,7 @@ public class UserService {
         List<User> users = load();
         for (User u : users) {
             if (u.getID().equalsIgnoreCase(user.getID())) {
-                throw new AppException("User ID " + user.getID() + " already exists");
+                throw new IllegalArgumentException("User ID " + user.getID() + " already exists");
             }
         }
         users.add(user);
@@ -127,13 +127,13 @@ public class UserService {
                 return;
             }
         }
-        throw new AppException("User " + user.getID() + " not found");
+        throw new IllegalArgumentException("User " + user.getID() + " not found");
     }
 
     public void deleteUser(String userID) {
         List<User> users = load();
         if (!users.removeIf(u -> u.getID().equals(userID))) {
-            throw new AppException("User " + userID + " not found");
+            throw new IllegalArgumentException("User " + userID + " not found");
         }
         save(users);
     }
@@ -153,7 +153,7 @@ public class UserService {
     /** Staff only (everyone except students), filtered by role and/or part of the name, sorted by role then name. */
     public List<User> viewStaff(String role, String name) {
         if (role != null && !role.isEmpty() && !Roles.STAFF_ROLES.contains(role)) {
-            throw new AppException("\"" + role + "\" is not a staff role");
+            throw new IllegalArgumentException("\"" + role + "\" is not a staff role");
         }
         String n = name == null ? "" : name.trim().toLowerCase(Locale.ROOT);
         List<User> staff = new ArrayList<>();

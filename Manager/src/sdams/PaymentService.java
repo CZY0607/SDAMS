@@ -76,7 +76,7 @@ public class PaymentService {
     /** Diagram signature: generateRevenueReport(month, year): String */
     public String generateRevenueReport(Integer month, Integer year) {
         if (month == null || month < 1 || month > 12) {
-            throw new AppException("Month must be 1-12");
+            throw new IllegalArgumentException("Month must be 1-12");
         }
         BigDecimal revenue = getMonthlyRevenue(year)[month - 1].setScale(2);
         int count = getMonthlyPaymentCount(year)[month - 1];

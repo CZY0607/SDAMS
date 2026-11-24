@@ -13,13 +13,13 @@ public abstract class User {
     protected User(String userID, String name, String contactNum, String password) {
         String id = userID == null ? "" : userID.trim();
         if (!id.matches("[A-Za-z0-9_-]{2,20}")) {
-            throw new AppException("User ID must be 2-20 characters (letters, digits, - or _)");
+            throw new IllegalArgumentException("User ID must be 2-20 characters (letters, digits, - or _)");
         }
         this.userID = id;
         setName(name);
         setContact(contactNum);
         if (password == null || password.length() < 6) {
-            throw new AppException("Password must be at least 6 characters");
+            throw new IllegalArgumentException("Password must be at least 6 characters");
         }
         this.password = password;
     }
@@ -35,7 +35,7 @@ public abstract class User {
     public final void setName(String name) {
         String n = name == null ? "" : name.trim();
         if (n.length() < 2 || n.length() > 60) {
-            throw new AppException("Name must be 2-60 characters");
+            throw new IllegalArgumentException("Name must be 2-60 characters");
         }
         this.name = n;
     }
@@ -47,7 +47,7 @@ public abstract class User {
     public final void setContact(String contact) {
         String c = contact == null ? "" : contact.trim();
         if (!c.matches("[0-9+\\- ]{7,20}")) {
-            throw new AppException("Contact number must be 7-20 digits (+, - and spaces allowed)");
+            throw new IllegalArgumentException("Contact number must be 7-20 digits (+, - and spaces allowed)");
         }
         this.contactNum = c;
     }
@@ -66,7 +66,7 @@ public abstract class User {
             return false;
         }
         if (newPwd == null || newPwd.length() < 6) {
-            throw new AppException("Password must be at least 6 characters");
+            throw new IllegalArgumentException("Password must be at least 6 characters");
         }
         this.password = newPwd;
         return true;

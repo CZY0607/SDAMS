@@ -239,7 +239,7 @@ public class ManagerFrame extends JFrame {
                 userService.deleteUser(selected.getID());
                 say("Deleted " + selected.getName() + ".", false);
                 reload();
-            } catch (AppException ex) {
+            } catch (IllegalArgumentException | IllegalStateException ex) {
                 say(ex.getMessage(), true);
             }
         }
@@ -284,7 +284,7 @@ public class ManagerFrame extends JFrame {
                     }
                     reload();
                     return;
-                } catch (AppException ex) {
+                } catch (IllegalArgumentException | IllegalStateException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Please check the form", JOptionPane.WARNING_MESSAGE);
                 }
             }
