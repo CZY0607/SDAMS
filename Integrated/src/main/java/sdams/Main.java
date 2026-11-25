@@ -6,8 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import sdams.student.LoginFrame;
 
 /**
  * Class diagram: Main - the application entry point.
@@ -65,14 +64,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception ignored) {
-                // the default look and feel is fine
-            }
-            new Main().start();
-        });
+        LoginFrame.main(args);
     }
 
     public void start() {
@@ -80,7 +72,7 @@ public class Main {
     }
 
     public void showLogin() {
-        new LoginFrame(this, authService).setVisible(true);
+        new LoginFrame(this).setVisible(true);
     }
 
     /** Called by LoginFrame after a successful login. */
