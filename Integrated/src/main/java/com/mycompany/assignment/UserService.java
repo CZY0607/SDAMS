@@ -34,6 +34,7 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User is required");
         }
+        User.checkUserID(user.getID());
         ValidationUtil.requireRole(user.getRole());
         ValidationUtil.requireName(user.getName());
         ValidationUtil.requireContact(user.getContact());
