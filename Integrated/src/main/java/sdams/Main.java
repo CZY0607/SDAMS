@@ -1,6 +1,7 @@
 package sdams;
 
 import com.mycompany.assignment.*;
+import sdams.student.Student;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,19 +44,19 @@ public class Main {
     }
 
     private final UserService userService = new UserService();
-    private final PaymentService paymentService = new PaymentService();
-    private final ClassRegistrationService registrationService = new ClassRegistrationService();
+    private final RevenueReportReader paymentService = new RevenueReportReader();
+    private final RegistrationReportReader registrationService = new RegistrationReportReader();
     private final AuthenticationService authService = new AuthenticationService(userService);
 
     public UserService getUserService() {
         return userService;
     }
 
-    public PaymentService getPaymentService() {
+    public RevenueReportReader getRevenueReportReader() {
         return paymentService;
     }
 
-    public ClassRegistrationService getRegistrationService() {
+    public RegistrationReportReader getRegistrationService() {
         return registrationService;
     }
 
@@ -77,7 +78,7 @@ public class Main {
 
     /** Called by LoginFrame after a successful login. */
     public void openFrameFor(LoginFrame login, User user) {
-        if (user instanceof Student && !"ACTIVE".equals(((Student) user).getEnrollmentStatus())) {
+        if (user instanceof Student && !"Active".equals(((Student) user).getEnrollmentStatus())) {
             authService.logout();
             JOptionPane.showMessageDialog(login, "Your student account is inactive.");
             return;

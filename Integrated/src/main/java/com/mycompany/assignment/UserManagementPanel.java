@@ -1,5 +1,7 @@
 package com.mycompany.assignment;
 
+import sdams.student.Student;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -108,7 +110,7 @@ public class UserManagementPanel extends JPanel {
         final JTextField contact = new JTextField(20);
         final JPasswordField password = new JPasswordField(20);
         final JTextField specializations = new JTextField(20);
-        final JComboBox<String> status = new JComboBox<>(Student.STATUSES.toArray(new String[0]));
+        final JComboBox<String> status = new JComboBox<>(new String[]{"Active", "Inactive"});
         final JPanel panel = new JPanel(new GridLayout(0, 2, 6, 6));
 
         UserForm(User existing) {
@@ -140,7 +142,7 @@ public class UserManagementPanel extends JPanel {
             if (roles.contains(Roles.INSTRUCTOR)) {
                 panel.add(new JLabel("Specializations (comma-separated):"));
                 panel.add(specializations);
-                if (existing instanceof Instructor) {
+                if (existing != null && Roles.INSTRUCTOR.equals(existing.getRole())) {
                     specializations.setText(existing.getExtraData().replace(";", ", "));
                 }
                 role.addActionListener(e -> syncEnabled());
@@ -149,7 +151,9 @@ public class UserManagementPanel extends JPanel {
                 panel.add(new JLabel("Enrollment status:"));
                 panel.add(status);
                 if (existing instanceof Student) {
-                    status.setSelectedItem(((Student) existing).getEnrollmentStatus());
+                    String current = ((Student) existing).getEnrollmentStatus();
+                    if ("Suspended".equals(current)) status.addItem(current);
+                    status.setSelectedItem(current);
                 }
             }
             syncEnabled();
@@ -323,7 +327,7 @@ public class UserManagementPanel extends JPanel {
         if (u instanceof Student) {
             return "Enrollment: " + ((Student) u).getEnrollmentStatus();
         }
-        if (u instanceof Instructor) {
+        if (Roles.INSTRUCTOR.equals(u.getRole())) {
             String s = u.getExtraData().replace(";", ", ");
             return s.isEmpty() ? "-" : s;
         }

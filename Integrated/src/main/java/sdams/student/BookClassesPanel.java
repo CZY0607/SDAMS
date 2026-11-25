@@ -1,6 +1,5 @@
 package sdams.student;
 
-import com.mycompany.assignment.Student;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;

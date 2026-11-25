@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class diagram: ClassRegistrationService (Member 3 owns it).
+ * Class diagram: RegistrationReportReader (Member 3 owns it).
  * Only the READ side that the Manager's Revenue Report needs is here.
  *
  * registrations.txt:  registrationID|studentID|classID|bookingDate|status
  * Assumption to confirm with Member 3: cancelled bookings have the status CANCELLED.
  */
-public class ClassRegistrationService {
+public class RegistrationReportReader {
     public static final String CANCELLED_STATUS = "CANCELLED";
 
     private final FileStore store = new FileStore("registrations.txt");

@@ -1,6 +1,5 @@
 package sdams.student;
 
-import com.mycompany.assignment.Student;
 
 import java.util.LinkedHashMap;
 import javax.swing.*;
@@ -35,30 +34,7 @@ public class StudentDashboard extends JFrame {
     private static final Color MAIN_TEXT = new Color(16, 24, 40);
 
     public StudentDashboard(Student student, Runnable onLogout) {
-        this(student, createPrices(), createInstructors(), onLogout);
-    }
-
-    private static Map<String, BigDecimal> createPrices() {
-
-        Map<String, BigDecimal> prices = new LinkedHashMap<>();
-
-        prices.put("C001", new BigDecimal("100.00"));
-        prices.put("C002", new BigDecimal("120.00"));
-        prices.put("C003", new BigDecimal("90.00"));
-
-        return prices;
-    }
-
-    // Temporary instructor assignments
-    private static Map<String, String> createInstructors() {
-
-        Map<String, String> instructors = new LinkedHashMap<>();
-
-        instructors.put("C001", "IN001");
-        instructors.put("C002", "IN002");
-        instructors.put("C003", "IN003");
-
-        return instructors;
+        this(student, Map.of(), Map.of(), onLogout);
     }
 
     public StudentDashboard(Student student, Map<String, BigDecimal> classPrices, Map<String, String> classInstructors, Runnable onLogout) {

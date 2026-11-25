@@ -50,8 +50,8 @@ public class ManagerFrame extends JFrame {
     private final Main app;
     private final User manager;
     private final UserService userService;
-    private final PaymentService paymentService;
-    private final ClassRegistrationService registrationService;
+    private final RevenueReportReader paymentService;
+    private final RegistrationReportReader registrationService;
 
     private final JLabel statusLabel = new JLabel(" ");
 
@@ -60,7 +60,7 @@ public class ManagerFrame extends JFrame {
         this.app = app;
         this.manager = manager;
         this.userService = app.getUserService();
-        this.paymentService = app.getPaymentService();
+        this.paymentService = app.getRevenueReportReader();
         this.registrationService = app.getRegistrationService();
         buildScreen();
     }

@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Class diagram: PaymentService (Member 3 owns it).
+ * Class diagram: RevenueReportReader (Member 3 owns it).
  * Only the READ side that the Manager's Revenue Report needs is here.
  *
  * payments.txt:  paymentID|registrationID|amount|paymentDate|paymentMethod|status
  * Assumption to confirm with Member 3: a payment counts as revenue when its status is PAID.
  */
-public class PaymentService {
+public class RevenueReportReader {
     public static final String REVENUE_STATUS = "PAID";
 
     private final FileStore store = new FileStore("payments.txt");

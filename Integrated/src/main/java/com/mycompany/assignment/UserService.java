@@ -1,5 +1,8 @@
 package com.mycompany.assignment;
 
+import sdams.Manager;
+import sdams.student.Student;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -279,19 +282,19 @@ public class UserService {
         switch (role) {
             case Roles.MANAGER:            return new Manager(id, name, contact, hash);
             case Roles.ADMINISTRATOR:      return new Administrator(id, name, contact, hash);
-            case Roles.INSTRUCTOR:         return new Instructor(id, name, contact, hash);
-            case Roles.STUDENT:            return new Student(id, name, contact, hash);
-            case Roles.FACILITIES_OFFICER: return new FacilitiesOfficer(id, name, contact, hash);
-            case Roles.ATTENDANCE_OFFICER: return new AttendanceOfficer(id, name, contact, hash);
+            case Roles.STUDENT: return new Student(id, name, contact, hash, "Active");
+            case Roles.INSTRUCTOR:
+            case Roles.ATTENDANCE_OFFICER:
+            case Roles.FACILITIES_OFFICER: return new StaffAccount(role, id, name, contact, hash);
             default: throw new IllegalArgumentException("Unknown role: " + role);
         }
     }
 
     public static void applyExtra(User u, String extra) {
         if (u instanceof Student) {
-            ((Student) u).updateEnrollmentStatus(extra == null || extra.isEmpty() ? "ACTIVE" : extra);
-        } else if (u instanceof Instructor) {
-            ((Instructor) u).setSpecializationsFromText(extra);
+            u.loadExtraData(extra);
+        } else if (Roles.INSTRUCTOR.equals(u.getRole())) {
+            u.loadExtraData(StaffAccount.specializations(extra));
         }
     }
 

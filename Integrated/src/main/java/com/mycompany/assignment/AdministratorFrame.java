@@ -64,12 +64,4 @@ public class AdministratorFrame extends JFrame {
     public User getCurrentUser() {
         return currentUser;
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            UserService service = new UserService();
-            User admin = service.findById("AD001");
-            new AdministratorFrame(service, admin).setVisible(true);
-        });
-    }
 }

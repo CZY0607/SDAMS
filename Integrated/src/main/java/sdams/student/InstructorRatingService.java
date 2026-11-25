@@ -11,7 +11,15 @@ public class InstructorRatingService {
 
     private static final String RATINGS = "instructor_ratings.txt";
 
-    public InstructorRatingService() {}
+    private final java.util.function.BiPredicate<String, String> attendanceRecorded;
+
+    public InstructorRatingService() {
+        this((studentID, classID) -> false);
+    }
+
+    public InstructorRatingService(java.util.function.BiPredicate<String, String> attendanceRecorded) {
+        this.attendanceRecorded = java.util.Objects.requireNonNull(attendanceRecorded);
+    }
 
     /**
      * Properly adds a new rating to the current ratings with validations and checks
@@ -56,7 +64,9 @@ public class InstructorRatingService {
             }
         }
 
-        //throw new RegistrationException("Ratings are not available until the attendance verification is complete");
+        if (!attendanceRecorded.test(studentID, classID)) {
+            throw new RegistrationException("Attendance must be recorded before rating this class.");
+        }
 
 
         //Collect all existing ratingIDs
