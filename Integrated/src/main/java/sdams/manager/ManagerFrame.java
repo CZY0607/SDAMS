@@ -1,6 +1,12 @@
-package sdams;
-
-import com.mycompany.assignment.*;
+package sdams.manager;
+import sdams.administrator.Administrator;
+import sdams.general.AuthenticationService;
+import sdams.general.Main;
+import sdams.general.PasswordUtil;
+import sdams.general.Roles;
+import sdams.general.User;
+import sdams.general.UserService;
+import sdams.general.ValidationUtil;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

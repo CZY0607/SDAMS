@@ -1,14 +1,15 @@
-package sdams;
-
-import com.mycompany.assignment.*;
+package sdams.general;
+import sdams.administrator.AdministratorFrame;
+import sdams.manager.ManagerFrame;
+import sdams.manager.RegistrationReportReader;
+import sdams.manager.RevenueReportReader;
 import sdams.student.Student;
+import sdams.student.StudentDashboard;
 
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import sdams.student.LoginFrame;
-
 /**
  * Class diagram: Main - the application entry point.
  * It opens the login window and, after a successful login, opens the window that belongs to the
@@ -34,7 +35,7 @@ public class Main {
             frame.setOnLogout(() -> app.logout(frame));
             return frame;
         });
-        FRAMES.put(Roles.STUDENT, (app, user) -> new sdams.student.StudentDashboard(
+        FRAMES.put(Roles.STUDENT, (app, user) -> new StudentDashboard(
                 (Student) user, () -> { app.authService.logout(); app.showLogin(); }));
 
     }

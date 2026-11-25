@@ -1,4 +1,6 @@
-package sdams;
+package sdams.manager;
+import sdams.general.FileStore;
+import sdams.student.Payment;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,5 +1,6 @@
 package sdams.student;
 
+
 public class RegistrationException extends Exception {
 
     public RegistrationException(String message) {

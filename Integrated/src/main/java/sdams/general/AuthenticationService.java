@@ -1,6 +1,5 @@
-package sdams;
+package sdams.general;
 
-import com.mycompany.assignment.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

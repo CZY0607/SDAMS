@@ -1,4 +1,5 @@
-package com.mycompany.assignment;
+package sdams.general;
+
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

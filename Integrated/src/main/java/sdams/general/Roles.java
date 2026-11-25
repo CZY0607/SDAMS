@@ -1,4 +1,5 @@
-package com.mycompany.assignment;
+package sdams.general;
+
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,12 +31,12 @@ public final class Roles {
 
     public static String prefixOf(String role) {
         switch (role) {
-            case MANAGER:            return "MG";
-            case ADMINISTRATOR:      return "AD";
-            case INSTRUCTOR:         return "IN";
-            case STUDENT:            return "ST";
-            case FACILITIES_OFFICER: return "FO";
-            case ATTENDANCE_OFFICER: return "AO";
+            case MANAGER:            return "M";
+            case ADMINISTRATOR:      return "A";
+            case INSTRUCTOR:         return "I";
+            case STUDENT:            return "S";
+            case FACILITIES_OFFICER: return "F";
+            case ATTENDANCE_OFFICER: return "T";
             default: throw new IllegalArgumentException("Unknown role: " + role);
         }
     }

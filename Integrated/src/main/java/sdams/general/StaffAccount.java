@@ -1,4 +1,5 @@
-package com.mycompany.assignment;
+package sdams.general;
+import sdams.administrator.Administrator;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

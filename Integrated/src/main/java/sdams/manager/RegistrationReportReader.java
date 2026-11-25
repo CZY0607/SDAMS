@@ -1,4 +1,5 @@
-package sdams;
+package sdams.manager;
+import sdams.general.FileStore;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

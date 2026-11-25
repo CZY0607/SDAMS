@@ -1,7 +1,6 @@
-package sdams.student;
+package sdams.general;
 
-import com.mycompany.assignment.User;
-import sdams.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

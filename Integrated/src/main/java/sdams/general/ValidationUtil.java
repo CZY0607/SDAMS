@@ -1,4 +1,5 @@
-package com.mycompany.assignment;
+package sdams.general;
+
 
 public final class ValidationUtil {
     private ValidationUtil() {}

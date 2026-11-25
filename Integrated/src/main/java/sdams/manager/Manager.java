@@ -1,7 +1,6 @@
-package sdams;
-
-import com.mycompany.assignment.User;
-import com.mycompany.assignment.Roles;
+package sdams.manager;
+import sdams.general.Roles;
+import sdams.general.User;
 
 /** Class diagram: Manager extends User. */
 public class Manager extends User {

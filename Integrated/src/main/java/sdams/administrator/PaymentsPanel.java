@@ -1,4 +1,6 @@
-package com.mycompany.assignment;
+package sdams.administrator;
+import sdams.student.Payment;
+import sdams.student.Student;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

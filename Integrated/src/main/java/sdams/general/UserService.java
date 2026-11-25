@@ -1,6 +1,6 @@
-package com.mycompany.assignment;
-
-import sdams.Manager;
+package sdams.general;
+import sdams.administrator.Administrator;
+import sdams.manager.Manager;
 import sdams.student.Student;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User is required");
         }
-        User.checkUserID(user.getID());
+        checkRoleId(user.getRole(), user.getID());
         ValidationUtil.requireRole(user.getRole());
         ValidationUtil.requireName(user.getName());
         ValidationUtil.requireContact(user.getContact());
@@ -175,6 +175,7 @@ public class UserService {
         for (User u : users) {
             max = Math.max(max, numberOf(u.getID(), prefix));
         }
+        if (max >= 999) throw new IllegalStateException("No IDs available for " + role);
         return String.format("%s%03d", prefix, max + 1);
     }
 
@@ -224,8 +225,9 @@ public class UserService {
                 if (p.length < 5 || !Roles.isValid(p[0])) {
                     continue;
                 }
+                checkRoleId(p[0], p[1]);
                 User u = build(p[0], p[1], p[2], p[3], p[4]);
-                u.loadExtraData(p.length > 5 ? p[5] : "");
+                applyExtra(u, p.length > 5 ? p[5] : "");
                 users.add(u);
             }
         } catch (IOException ex) {
@@ -240,7 +242,7 @@ public class UserService {
         }
         for (User u : users) {
             lines.add(u.getRole() + DELIM + u.getID() + DELIM + u.getName() + DELIM + u.getContact()
-                    + DELIM + u.getPasswordHash() + DELIM + u.getExtraData());
+                    + DELIM + u.getPasswordHash() + DELIM + extraData(u));
         }
         try {
             if (file.getParent() != null) {
@@ -259,10 +261,10 @@ public class UserService {
         if (!users.isEmpty()) {
             return;
         }
-        users.add(new Manager("MG001", "Default Manager", "0123456789", PasswordUtil.hash("Manager123")));
-        users.add(new Administrator("AD001", "Default Administrator", "0129876543", PasswordUtil.hash("Admin1234")));
-        noteIssued("MG001");
-        noteIssued("AD001");
+        users.add(new Manager("M001", "Default Manager", "0123456789", PasswordUtil.hash("Manager123")));
+        users.add(new Administrator("A001", "Default Administrator", "0129876543", PasswordUtil.hash("Admin1234")));
+        noteIssued("M001");
+        noteIssued("A001");
         save();
     }
 
@@ -290,11 +292,25 @@ public class UserService {
         }
     }
 
+    private static void checkRoleId(String role, String id) {
+        User.checkUserID(id);
+        if (!id.startsWith(Roles.prefixOf(role))) throw new IllegalArgumentException("Incorrect ID prefix for " + role);
+    }
+
+    public static String extraData(User user) {
+        if (user instanceof Student student) return student.getEnrollmentStatus();
+        if (user instanceof StaffAccount staff) return staff.getExtraData();
+        return "";
+    }
+
     public static void applyExtra(User u, String extra) {
         if (u instanceof Student) {
-            u.loadExtraData(extra);
+            Student student = (Student) u;
+            if (extra == null || extra.isBlank() || "ACTIVE".equalsIgnoreCase(extra)) student.updateEnrollmentStatus("Active");
+            else if ("INACTIVE".equalsIgnoreCase(extra) || "SUSPENDED".equalsIgnoreCase(extra)) student.updateEnrollmentStatus("Inactive");
+            else throw new IllegalArgumentException("Unknown enrollment status: " + extra);
         } else if (Roles.INSTRUCTOR.equals(u.getRole())) {
-            u.loadExtraData(StaffAccount.specializations(extra));
+            ((StaffAccount) u).loadExtraData(StaffAccount.specializations(extra));
         }
     }
 

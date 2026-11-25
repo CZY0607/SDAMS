@@ -7,6 +7,6 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <exec.mainClass>sdams.student.LoginFrame</exec.mainClass>
+    <exec.mainClass>sdams.general.LoginFrame</exec.mainClass>
   </properties>
 </project>

@@ -1,5 +1,6 @@
 package sdams.student;
 
+
 public class FileRecord {
 
     private final int lineNumber;

@@ -1,4 +1,5 @@
-package com.mycompany.assignment;
+package sdams.general;
+import sdams.student.Student;
 
 public abstract class User {
 
@@ -190,8 +191,8 @@ public abstract class User {
      */
     static void checkUserID(String ID) {
         checkInput(ID, "UserID");
-        if (!(ID.matches("[A-Z]{1,2}\\d{3,}"))) {
-            throw new IllegalArgumentException("UserID must be one or two uppercase letters followed by at least three digits.");
+        if (!(ID.matches("[A-Z]\\d{3}"))) {
+            throw new IllegalArgumentException("UserID must be one uppercase letter followed by three digits.");
         }
     }
 
@@ -235,13 +236,6 @@ public abstract class User {
 
     String getPasswordHash() {
         return password;
-    }
-
-    public String getExtraData() {
-        return "";
-    }
-
-    public void loadExtraData(String data) {
     }
 
     @Override

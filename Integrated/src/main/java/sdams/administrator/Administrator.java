@@ -1,4 +1,6 @@
-package com.mycompany.assignment;
+package sdams.administrator;
+import sdams.general.Roles;
+import sdams.general.User;
 
 public class Administrator extends User {
     public Administrator(String userID, String name, String contactNum, String passwordHash) {

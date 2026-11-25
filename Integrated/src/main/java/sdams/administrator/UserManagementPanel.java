@@ -1,5 +1,8 @@
-package com.mycompany.assignment;
-
+package sdams.administrator;
+import sdams.general.Roles;
+import sdams.general.User;
+import sdams.general.UserService;
+import sdams.general.ValidationUtil;
 import sdams.student.Student;
 
 import java.awt.BorderLayout;
@@ -143,7 +146,7 @@ public class UserManagementPanel extends JPanel {
                 panel.add(new JLabel("Specializations (comma-separated):"));
                 panel.add(specializations);
                 if (existing != null && Roles.INSTRUCTOR.equals(existing.getRole())) {
-                    specializations.setText(existing.getExtraData().replace(";", ", "));
+                    specializations.setText(UserService.extraData(existing).replace(";", ", "));
                 }
                 role.addActionListener(e -> syncEnabled());
             }
@@ -152,7 +155,6 @@ public class UserManagementPanel extends JPanel {
                 panel.add(status);
                 if (existing instanceof Student) {
                     String current = ((Student) existing).getEnrollmentStatus();
-                    if ("Suspended".equals(current)) status.addItem(current);
                     status.setSelectedItem(current);
                 }
             }
@@ -328,7 +330,7 @@ public class UserManagementPanel extends JPanel {
             return "Enrollment: " + ((Student) u).getEnrollmentStatus();
         }
         if (Roles.INSTRUCTOR.equals(u.getRole())) {
-            String s = u.getExtraData().replace(";", ", ");
+            String s = UserService.extraData(u).replace(";", ", ");
             return s.isEmpty() ? "-" : s;
         }
         return "-";

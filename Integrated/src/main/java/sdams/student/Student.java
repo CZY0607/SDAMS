@@ -1,7 +1,6 @@
 package sdams.student;
-
-import com.mycompany.assignment.User;
-import com.mycompany.assignment.Roles;
+import sdams.general.Roles;
+import sdams.general.User;
 
 public class Student extends User {
 
@@ -27,20 +26,5 @@ public class Student extends User {
     @Override
     public String getRole() {
         return Roles.STUDENT;
-    }
-
-    @Override
-    public String getExtraData() {
-        return enrollmentStatus;
-    }
-
-    @Override
-    public void loadExtraData(String stored) {
-        if ("SUSPENDED".equalsIgnoreCase(stored)) {
-            enrollmentStatus = "Suspended"; // Preserve existing disabled accounts.
-        } else {
-            updateEnrollmentStatus(stored == null || stored.isEmpty() || "ACTIVE".equalsIgnoreCase(stored)
-                    ? "Active" : "Inactive");
-        }
     }
 }

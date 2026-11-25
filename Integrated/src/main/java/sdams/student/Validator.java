@@ -1,5 +1,6 @@
 package sdams.student;
 
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,8 +35,7 @@ public final class Validator {
     public static void checkID(String inputID, String label, String prefix) {
 
         checkInput(inputID, label);
-        String acceptedPrefix = prefix.equals("S") ? "ST?" : prefix.equals("I") ? "IN?" : prefix;
-        if (!(inputID.matches(acceptedPrefix + "\\d{3}"))) {
+        if (!(inputID.matches(prefix + "\\d{3}"))) {
             throw new IllegalArgumentException(label + " must contain prefix " + prefix + " followed by 3 digits.");
 
         }
